@@ -1,0 +1,155 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+#define NUM_QUEUES 10
+#define MAXSTR 20
+
+
+typedef struct node{
+					char taskname[20];
+					int priority;
+					int size;
+					struct node *next;
+}node_t;
+ typedef struct queue{
+					node_t *front;
+					node_t *rear;
+					node_t *newfront;
+					node_t *temp;
+}queue_t;
+void insert_task(queue_t *array, char task_name[], int prio,int size);
+void get_highest_priority_task(queue_t *array);
+void print(queue_t *array);
+node_t * create_new_node(char task_name[], int prio, int size);
+ 
+
+ queue_t array[NUM_QUEUES];
+
+node_t * create_new_node(char task_name[], int prio, int size){
+
+	node_t * newnode = (node_t *)(malloc(sizeof(node_t)));
+	newnode->priority = prio;
+	newnode->size = size;
+	strcpy(newnode->taskname,task_name);
+	newnode->next = NULL;
+	return newnode;
+}
+
+
+
+ void insert_task(queue_t *array, char task_name[], int prio,int size)
+{
+	 
+         
+	
+	 int i=prio-1,j; 
+	node_t * trav = (node_t*)(malloc(sizeof(node_t)));
+	trav = create_new_node(task_name, prio, size);
+	                   
+	 if(array[i].rear==NULL){
+		 
+		 
+		 array[i].front=trav;
+		array[i].rear=array[i].front;
+		printf("Task Added,%s\n",task_name);
+		}
+	 else
+	 {
+		 
+		array[i].rear->next = trav;
+		array[i].rear=trav;
+		//free(array[i].temp);
+		printf("Task Added, %s\n",task_name);
+
+		
+		
+		 
+	 }
+
+}
+ 
+	 void get_highest_priority_task(queue_t array[])
+	{
+         int i;
+	for(i=0;i<10;i++){
+			
+			 if(array[i].front==NULL)
+			 printf("Queue %d is Empty\n",i+1);
+			else
+			   {
+			    array[i].newfront=malloc(sizeof(struct node));
+			    array[i].newfront=array[i].front;
+			  	if(array[i].newfront->next!=NULL)
+					{
+					  array[i].newfront=array[i].front->next;
+					  printf("Deleted task is %s from Queue %d\n",(array[i].front)->taskname,i+1);
+					  array[i].front=array[i].newfront;
+					  i=10;
+
+				         }
+			  	else{
+					 printf("Deleted task is %s",(array[i].front)->taskname);
+					 array[i].front=array[i].rear=NULL;
+					 i=10;
+						
+				   }
+			  }
+		 }			
+ }
+
+ void main()
+{
+int choice, prio,ret, size ;
+char taskname[MAXSTR];
+    
+	while(1){
+        
+            printf("1. Insert task.\n");
+            printf("2. Delete Highest priority Task.\n");
+            printf("3. Print tasks .\n");
+	    printf("4. Exit.\n");
+            printf("What do you want to do?\n");
+            scanf("%d", &choice);
+            switch (choice)
+                {
+                    case 1: 
+                            printf("What is the name of the task?\n");
+                            scanf("%s",taskname);
+                            printf("What is the priority of the task?\n");
+                            scanf("%d",&prio);
+                            printf("What is the size of the task?\n");
+                            scanf("%d",&size);
+                            insert_task(array,taskname, prio, size); 
+			    break;
+                    case 2:
+                            get_highest_priority_task(array);
+                            break;
+                    case 3: print(array);
+                            break;
+                    case 4: exit(0);
+                            break;
+                    default : printf("Wrong choice!");
+			
+                    
+                }
+        }
+}
+void print(queue_t array[]){ 
+int i;
+node_t * save = (node_t*)malloc(sizeof(node_t));
+			     for(i=0;i<10;i++){
+                                                save=array[i].front;
+						if(save==NULL){
+								printf("Queue with priority %d is empty\n",i+1);
+								
+								}
+						while(save!=NULL){
+						printf("Task in Priority %d are %s\n",i+1,save->taskname);
+                                                save=save->next;
+								}
+		                              }
+}
+
+								
+						

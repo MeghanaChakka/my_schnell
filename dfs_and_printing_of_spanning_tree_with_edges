@@ -1,0 +1,187 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdarg.h>
+
+#define MAX_NUM_VERTICES 20
+
+
+typedef struct vertex_node
+{
+   int                vertex;
+   struct vertex_node *next;
+}vertex_node_t;
+
+
+/* Graph */
+typedef struct graph
+{
+   /* Number of vertices */
+   int num_vertices;
+
+   /* Adjacency lists*/
+   vertex_node_t *adj_list[MAX_NUM_VERTICES];
+} graph_t;
+
+/* Marked */
+int marked[MAX_NUM_VERTICES]; // to mark the vertex while traversals
+
+/* Previous : to store the previous node of the different vertices*/
+int previous[MAX_NUM_VERTICES];
+
+/* Operations */
+void graph_init(graph_t *G, int num_vertices);
+void graph_print(graph_t *G);
+
+/* Function : linked_list_insert : insert at begin */
+vertex_node_t *linked_list_insert(vertex_node_t *head, int vertex)
+{
+  vertex_node_t *newnode;
+
+  newnode = (vertex_node_t *) malloc(sizeof(vertex_node_t));
+  // TBD : error check
+  newnode->next = head;
+  newnode->vertex = vertex;
+
+  return newnode;
+}
+
+/* Function : linked_list_insert : insert at end */
+vertex_node_t *linked_list_insert_at_end(vertex_node_t *head, int vertex)
+{
+  vertex_node_t *newnode, *curr;
+
+  newnode = (vertex_node_t *) malloc(sizeof(vertex_node_t));
+  // TBD : error check
+  newnode->next = NULL;
+  newnode->vertex = vertex;
+
+  if (head == NULL)
+     head = newnode;
+  else
+  {
+     curr = head;
+     while (curr->next != NULL)
+       curr = curr->next;
+
+     curr->next = newnode;
+
+  }
+  return head;
+}
+
+
+void graph_print(graph_t *G)
+{
+  int vertex;
+  vertex_node_t *head;
+  printf("graph_print : num_vertices = %d\n", G->num_vertices);
+
+  // print Adjacency Lists
+  for(vertex=0;vertex<G->num_vertices;vertex++)
+  {
+    printf("Adj_list of vertex %d : ", vertex);
+    head = G->adj_list[vertex];
+    while (head != NULL)
+    {
+      printf("%d,  ", head->vertex);
+      head = head->next;
+    }
+    printf("\n");
+  }
+}
+
+
+void graph_set_adj_list(graph_t *G, int vertex, ...)
+{
+  va_list ap;
+  int adj_vertex;
+
+  vertex_node_t *head = NULL;
+
+  va_start(ap, vertex);
+
+  adj_vertex = va_arg(ap, int);
+
+  while (adj_vertex != -1)
+  {
+    head = linked_list_insert_at_end(head, adj_vertex);
+    adj_vertex = va_arg(ap, int);
+  }
+
+  G->adj_list[vertex] = head;
+
+  va_end(ap);
+}
+
+void graph_dfs(graph_t *G, int vertex)
+{
+   vertex_node_t *head;
+
+   //printf("visited: %d\n", vertex);
+   printf("Vertex:%d\n", vertex);
+   marked[vertex] = 1;
+
+
+  head = G->adj_list[vertex];
+  while (head != NULL)
+  {
+     if (marked[head->vertex] == 0)
+     {
+        /* store the previous of this vertex */
+        previous[head->vertex] = vertex;
+        printf("Edge:(%d,%d)\n", vertex, head->vertex);
+        graph_dfs(G, head->vertex);
+     }
+     head = head->next;
+  }
+}
+
+
+int main()
+{
+   graph_t g1;
+   int i;
+
+   g1.num_vertices = 8;
+
+   // Set Adjacency Lists
+   // NOTICE : noramlly, a graph ADT will have add_edge() operation,
+   // and not set_adj_list. add_edge() would add the edge in two adjacency
+   //   lists, in case of undirected graphs.
+   // Here, we do it simply to ensure adjacency list having the specified
+   // order
+   graph_set_adj_list(&g1, 0, 1, 2, 3, -1);
+   graph_set_adj_list(&g1, 1, 4, 0, -1);
+   graph_set_adj_list(&g1, 2, 5, 0, -1);
+   graph_set_adj_list(&g1, 3, 0, -1);
+   graph_set_adj_list(&g1, 4, 1, 6, 5, -1);
+   graph_set_adj_list(&g1, 5, 4, 7, 2, -1);
+   graph_set_adj_list(&g1, 6, 4, -1);
+   graph_set_adj_list(&g1, 7, 5, -1);
+
+   graph_print(&g1);
+
+   // unmark all vertices
+   for(i=0;i<g1.num_vertices;i++)
+     marked[i] = 0;
+
+   // Set all 'previous' nodes to invalid (-1)
+   for(i=0;i<g1.num_vertices;i++)
+     previous[i] = -1;
+
+   printf("DFS with spanning tree:\n");
+   graph_dfs(&g1, 0);
+   printf("\n");
+
+#if 0
+   printf("A DFS Spanning tree has edges :\n");
+   for(i=0;i<g1.num_vertices;i++)
+     if (previous[i] != -1)
+        printf("(%d,%d), ", previous[i], i);
+   printf("\n");
+#endif
+
+
+   return 0;
+}

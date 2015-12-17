@@ -1,0 +1,116 @@
+#include <stdio.h>
+
+#define MAX_NUM_VERTICES 20
+#define MAX_NUM_EDGES (MAX_NUM_VERTICES * (MAX_NUM_VERTICES-1))
+
+/* Graph */
+typedef struct graph
+{
+   /* Number of vertices */
+   int num_vertices;
+
+   /* Adjacency matrix */
+   int matrix[MAX_NUM_VERTICES][MAX_NUM_VERTICES];
+} graph_t;
+
+/* Operations */
+void graph_init(graph_t *G, int num_vertices);
+int graph_add_edge(graph_t *G, int vertex1, int vertex2);
+int graph_delete_edge(graph_t *G, int vertex1, int vertex2);
+void graph_print(graph_t *G);
+int graph_degree(graph_t *G, int vertex);
+int graph_check_adjacent(graph_t *G, int vertex1, int vertex2);
+int graph_get_adjacent_list(graph_t *G, int vertex, int arr[], int *p_num_adj);
+
+
+int graph_add_edge(graph_t *G, int vertex1, int vertex2)
+{
+  int old;
+
+
+  // TBD : check vertex ranges
+
+
+  // check if edge exists already
+  old = G->matrix[vertex1][vertex2];
+  if (old != 0)
+  {
+    printf("Error : The edge between %d and %d already existing\n", vertex1, vertex2);
+    return 0;
+  }
+
+  // add edge
+  G->matrix[vertex1][vertex2] = 1;
+  G->matrix[vertex2][vertex1] = 1; // Remember symmetry in undirected
+
+
+  return 1;
+}
+/* Function graph_init: Initialize graph to N vertices and 0 edges*/
+void graph_init(graph_t *G, int num_vertices)
+{
+  int row, col;
+
+  /* Vertices */
+  G->num_vertices = num_vertices;
+
+  // Adjacency matrix : Set the matrix to all zeros
+  for(row=0;row<num_vertices;row++)
+    for(col=0;col<num_vertices;col++)
+      G->matrix[row][col] = 0;
+}
+
+
+void graph_print(graph_t *G)
+{
+  int row, col;
+  printf("graph_print : num_vertices = %d\n", G->num_vertices);
+
+  // print Adjacency matrix
+  printf("    ");
+  for(col=0;col<G->num_vertices;col++)
+    printf("N%-3d", col);
+  printf("\n");
+  for(row=0;row<G->num_vertices;row++)
+  {
+    printf("N%-3d", row);
+    for(col=0;col<G->num_vertices;col++)
+      printf("%-4d", G->matrix[row][col]);
+    printf("\n");
+  }
+
+}
+
+int graph_degree(graph_t *G, int vertex)
+{
+  int col, degree = 0;
+
+  for(col=0; col < G->num_vertices; col++)
+     if (G->matrix[vertex][col] != 0)
+        degree++;
+
+  return degree;
+}
+
+
+int main()
+{
+   graph_t g1;
+   int i;
+
+   graph_init(&g1, 5);
+
+   graph_add_edge(&g1, 0, 1);
+   graph_add_edge(&g1, 1, 2);
+   graph_add_edge(&g1, 2, 3);
+   graph_add_edge(&g1, 3, 4);
+   graph_add_edge(&g1, 4, 0);
+   graph_print(&g1);
+
+   for(i=0;i<5;i++)
+     printf("degree of node %d is %d\n", i, graph_degree(&g1, i));
+   return 0;
+
+
+
+}

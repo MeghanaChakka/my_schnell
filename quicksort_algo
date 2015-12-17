@@ -1,0 +1,113 @@
+#include <stdio.h>
+#include <assert.h>
+#define MAX 100
+
+// function prototypes
+int partition(int arr[], int low, int high);
+
+/* quick_sort : to sort the array elements lying between low and high (both inclusive */
+void quicksort(int arr[ ], int low, int high)
+{
+   int pivot_pos;
+
+  /* Approach
+   *
+   *  1) We partition the array, placing one element (pivot) in correct position
+   *  2) We sort the lower partition
+   *  3) We sort the higher partition
+   *
+   */
+
+  /* If there is nothing to do, do nothing */
+  if (low >= high)
+    return;
+
+  /* Partition */
+  pivot_pos = partition(arr, low, high);
+
+  // recursively sort the two partitions
+  quicksort(arr, low, pivot_pos-1);
+  quicksort(arr, pivot_pos+1, high);
+}
+
+
+/* Chooses some pivot element, places it in correct slot, returns the final
+ * position of the pivot element which marks one boundary of both partitions
+ */
+int partition(int arr[], int low, int high)
+{
+    int pivot_elem;
+    int firsthigher;
+    int i, temp;
+
+    assert(high > low);
+
+    /* We choose arr['high'] as the pivot element */
+
+    pivot_elem = arr[high];
+    firsthigher = low; // first element higher than the pivot
+
+    /* Loop from low till high - 1. If we find a smaller element than pivot,
+     *  we bring it to the left part of the array by swapping with
+     *  firsthigher and incrementing firsthigher
+     *
+     *  After that, we swap pivot element with firsthigher element.
+     *  We return the firsthigher index, which now contains the pivot placed
+     *   at its perfect (sorted) location
+     */
+
+   for(i = low; i <= high-1; i++)
+   {
+       if (arr[i] < pivot_elem)
+       {
+
+               /* Swap with firsthigher to bring all lower values together
+                * towards the left part of array
+                */
+               temp = arr[i];
+               arr[i] = arr[firsthigher];
+               arr[firsthigher] = temp;
+
+               firsthigher++; //
+       }
+   }
+
+   // Now firsthigher has the first element greater than or equal to pivot
+   // We can swap elements at index firsthigher and high
+   temp = arr[high];
+   arr[high] = arr[firsthigher];
+   arr[firsthigher] = temp;
+
+   //Now firsthigher has pivot_elem at its final (sorted) position
+
+   return firsthigher;
+}
+
+/* Main function */
+int main()
+{
+
+  int arr[MAX] = { 5, 4, 9, 2, 3 };
+  int num = 5;
+  int i;
+
+  printf("Enter number of elements:\n");
+  scanf("%d", &num);
+  printf("Enter the elements:\n");
+  for(i=0;i<num;i++)
+    scanf("%d", &arr[i]);
+
+  printf("The array before calling sort\n");
+  for(i=0;i<num;i++)
+    printf("%d ", arr[i]);
+  printf("\n");
+
+  quicksort(arr, 0, num-1);
+
+  printf("The array after calling sort\n");
+  for(i=0;i<num;i++)
+    printf("%d ", arr[i]);
+  printf("\n");
+
+  return 0;
+}

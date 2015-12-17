@@ -1,0 +1,50 @@
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+
+typedef struct student Student;
+struct student
+{
+    char name[300];
+    int age;
+    char course1[300];
+    char course2[300];
+    char remarks[300];
+};
+
+Student Data[30];
+
+void writeDisk()
+{
+    FILE *file = fopen("C:\\Users\\admin\\Desktop\\Data Structures\\disk.dat", "ab");
+    fwrite(&Data, sizeof(Student), count, file);
+    fclose(file);
+}
+
+void loadDisk()
+{
+    FILE *file1 = fopen("C:\\Users\\admin\\Desktop\\Data Structures\\st.dat", "rb");
+    if (file != NULL)
+    {
+        fread(&Data, sizeof(Student), count, file);
+        printf("The contents of the file are:");
+        printf("%s%d%s%s%s",Data[0].name,Data[0].age,Data[0].course1,Data[0].course2,Data[0].remarks);
+
+        fclose(file);
+    }
+}
+
+void emptyDisk()
+{
+
+    FILE *file = fopen("disk.dat", "rw");
+    fopen("disk.dat", "wb");
+
+}
+
+void main()
+{
+    loadDisk();
+
+
+}

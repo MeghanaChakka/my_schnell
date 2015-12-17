@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+/* Max number of elements in Stack */
+#define MAX_STACK_SIZE 10
+
+int main()
+{
+  /* Stack data structure */
+  int top = -1;                                                  /* Initialize to stack empty */
+  int stack[MAX_STACK_SIZE];
+
+  int choice, ret, elem, i;
+
+  while(1)
+  {
+
+     printf(" 1)Check Empty \n");
+     printf(" 2)Check Full\n");
+     printf(" 3)Push\n");
+     printf(" 4)Pop\n");
+     printf(" 5) Print\n");
+     printf(" 0)Exit\n");
+     printf(" What do you want to do?");
+
+     scanf("%d", &choice);
+
+     switch(choice)
+     {
+         case 1:                                                  /* Is Empty */
+            if (top  == -1)                                     // Stack Empty Condition
+               printf("Stack is empty\n");
+            else
+               printf("Stack is not empty\n");
+            break;
+
+         case 2:                                                     /* Is Full */
+            if (top == MAX_STACK_SIZE - 1)          // Stack Full Condition
+               printf("Stack is full\n");
+            else
+               printf("Stack is not full\n");
+            break;
+
+         case 3:                                                     /* Push */
+            printf("Enter the element to be inserted:");
+            scanf("%d", &elem);
+
+            /* If not full, insert element */
+            if (top == MAX_STACK_SIZE - 1)
+                printf("stack is full... can not push\n");
+            else
+            {
+              top++;
+              stack[top] = elem;
+            }
+            break;
+
+         case 4: /* Pop */
+
+            if (top == -1)
+                printf("stack is empty. can not pop\n");
+            else
+            {
+               elem = stack[top];
+               top--;
+               printf("Element popped is %d\n", elem);
+            }
+            break;
+         case 5: /* Print */
+            printf("top = %d\n", top);
+            for(i=0;i<=top;i++)
+                printf("stack[%d]=%d\n", i, stack[i]);
+            break;
+         case 0: /* Exit */
+            exit(0);
+     }
+  }
+  return 0;
+}

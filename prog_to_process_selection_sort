@@ -1,0 +1,56 @@
+#include <stdio.h>
+#define MAX 100
+
+
+void selection_sort(int n, int arr[ ])
+{
+  int i,j, min, temp;
+  /* We do n-1 passes
+   * In each pass, we find the minimum array element between i and n-1,
+   * and swap with element at arr[i]
+   */
+
+  for(i=0;i<n-1;i++)
+  {
+     /* Find min */
+     min=i;
+     for(j=i+1; j<n; j++)
+       if (arr[j] < arr[min])
+           min = j;
+
+
+    /* Swap arr[i] and arr[min] */
+    temp = arr[i];
+    arr[i] = arr[min];
+    arr[min] = temp;
+  }
+}
+
+/* Main function */
+int main()
+{
+
+  int arr[MAX] = { 5, 4, 9, 2, 3 };
+  int num = 5;
+  int i;
+
+  printf("Enter number of elements:\n");
+  scanf("%d", &num);
+  printf("Enter the elements:\n");
+  for(i=0;i<num;i++)
+    scanf("%d", &arr[i]);
+
+  printf("The array before calling sort\n");
+  for(i=0;i<num;i++)
+    printf("%d ", arr[i]);
+  printf("\n");
+
+  selection_sort(num, arr);
+
+  printf("The array after calling sort\n");
+  for(i=0;i<num;i++)
+    printf("%d ", arr[i]);
+  printf("\n");
+
+  return 0;
+}

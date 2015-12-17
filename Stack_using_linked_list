@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Typedef for linked list node */
+typedef struct node
+{
+  int          elem;
+  struct node *next;
+} node_t;
+
+int main()
+{
+  /* Stack data structure */
+  node_t *top;
+
+  node_t *pNewnode; // for adding a newnode;
+  node_t *temp;
+
+  int choice, elem;
+
+  while(1)
+  {
+
+     printf(" 1)Check Empty \n");
+     printf(" 2)Check Full\n");
+     printf(" 3)Push\n");
+     printf(" 4)Pop\n");
+     printf(" 5) Print\n");
+     printf(" 0)Exit\n");
+     printf(" What do you want to do?");
+
+     scanf("%d", &choice);
+
+     switch(choice)
+     {
+         case 1: /* Is Empty */
+            if (top  == NULL)
+               printf("Stack is empty\n");
+            else
+               printf("Stack is not empty\n");
+            break;
+
+         case 2: /* Is Full */
+            printf("Stack is NEVER full in Linked List Based Implementation\n");
+            break;
+
+         case 3: /* Push */
+            printf("Enter the element to be inserted:");
+            scanf("%d", &elem);
+
+            pNewnode = (node_t*) malloc(sizeof(node_t));
+            // TBD : error check for memory failure
+
+            pNewnode->elem = elem;
+
+            pNewnode->next = top;
+            top = pNewnode;
+            printf("Element has been inserted\n");
+            break;
+
+         case 4: /* Pop */
+
+            if (top == NULL)
+                printf("stack is empty. can not pop\n");
+            else
+            {
+               elem = top->elem;
+
+               // Move top to next node, and then free the first node
+               temp = top; // so that we do not loose the reference
+               top = top->next;
+               free(temp);
+
+               printf("Element popped is %d\n", elem);
+            }
+            break;
+         case 5: /* Print */
+            printf("Stack is : ");
+            temp = top;
+            while (temp != NULL)
+            {
+              printf("%d ", temp->elem);
+              temp = temp->next;
+            }
+            printf("\n");
+            break;
+         case 0: /* Exit */
+            exit(0);
+     }
+  }
+  return 0;
+}

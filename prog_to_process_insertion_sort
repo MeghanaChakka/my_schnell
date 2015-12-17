@@ -1,0 +1,59 @@
+#include <stdio.h>
+#define MAX 100
+
+
+void insertion_sort(int n, int arr[ ])
+{
+  int i, j, new_elem;
+  /* We do n-1 passes, where i varies from 1 to n-1
+   * In each pass, we insert the element a[i] into the correct position
+   */
+
+  for(i=1;i<=n-1;i++)
+  {
+
+     new_elem = arr[i];
+
+     // Need to insert new_elem into the already sorted array 0..i-1
+
+     // Keep shifting elements till
+     j=i-1;
+     while ((j>=0) && (arr[j] > new_elem))
+     {
+       arr[j+1] = arr[j];
+       j--;
+     }
+
+     // insert the new element at arr[j+1]
+     arr[j+1]  = new_elem;
+  }
+}
+
+/* Main function */
+int main()
+{
+
+  int arr[MAX] = { 5, 4, 9, 2, 3 };
+  int num = 5;
+  int i;
+
+  printf("Enter number of elements:\n");
+  scanf("%d", &num);
+  printf("Enter the elements:\n");
+  for(i=0;i<num;i++)
+    scanf("%d", &arr[i]);
+
+  printf("The array before calling sort\n");
+  for(i=0;i<num;i++)
+    printf("%d ", arr[i]);
+  printf("\n");
+
+  insertion_sort(num, arr);
+
+  printf("The array after calling sort\n");
+  for(i=0;i<num;i++)
+    printf("%d ", arr[i]);
+  printf("\n");
+
+  return 0;
+}

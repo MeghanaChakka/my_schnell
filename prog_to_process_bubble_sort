@@ -1,0 +1,72 @@
+#include <stdio.h>
+#define MAX 100
+
+
+void bubble_sort(int n, int arr[ ])
+{
+  int i, j, flag_swapped, temp;
+  /* We do multiple passes.
+   * In each pass, we keep comparing adjacent elements, and swap them
+   *  if they are out of order.
+   * Hence, in pass 1, the "highest" element reaches the last
+   *   slot (i.e. slot n-1) (assuming we are sorting in ascending order)
+   * Similarly, in pass 2, the "second highest" reaches slot n-2
+   * We stop when we are left with only one element.
+   * We  also stop if during a pass we find that no swapping was
+   * done (means it was already sorted)
+   *
+   * Ques:How many passes would we need (in worst case)?
+   * Ans :
+   */
+
+  for(i=0;i<n-1;i++)
+  {
+    /* i'th pass out of total n-1 passes */
+    flag_swapped = 0; // we want to know if some swapping happened or not
+    for(j=0;j<n-1-i;j++)
+      if (arr[j] > arr[j+1])
+      {
+         temp = arr[j];
+         arr[j] = arr[j+1];
+         arr[j+1] = temp;
+
+         flag_swapped = 1;
+      }
+
+    /* If no swapping happened, we can break out of the loop */
+    if (flag_swapped == 0)
+    {
+      printf("Breaking after pass %d\n", i + 1);
+      break;
+    }
+  }
+}
+
+/* Main function */
+int main()
+{
+
+  int arr[MAX] = { 5, 4, 9, 2, 3 };
+  int num = 5;
+  int i;
+
+  printf("Enter number of elements:\n");
+  scanf("%d", &num);
+  printf("Enter the elements:\n");
+  for(i=0;i<num;i++)
+    scanf("%d", &arr[i]);
+
+  printf("The array before calling sort\n");
+  for(i=0;i<num;i++)
+    printf("%d ", arr[i]);
+  printf("\n");
+
+  bubble_sort(num, arr);
+
+  printf("The array after calling sort\n");
+  for(i=0;i<num;i++)
+    printf("%d ", arr[i]);
+  printf("\n");
+
+  return 0;
+}

@@ -1,0 +1,213 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Data Type of node*/
+typedef struct node
+{
+  int         elem;
+  struct node *next;
+
+}node_t;
+
+
+/* Function : Insert at beginning */
+node_t *insert_at_begin(node_t *head, int elem)
+{
+  node_t *newnode;
+
+  newnode = malloc(sizeof(node_t));
+
+  newnode->elem = elem;
+  newnode->next = head;
+
+  return newnode;
+}
+/*Function : Insert at the end */
+void insert_at_end(node_t *head,node_t *temp,int elem)
+{ node_t *newnode;
+  newnode = malloc(sizeof(node_t));
+   newnode->elem = elem;
+   while(temp->next!=NULL)
+   {
+       temp=temp->next;
+   }
+   temp->next=newnode;
+   newnode->next=NULL;
+   temp=newnode;
+   temp=head;
+   printf("\n");
+   printf("List is : ");
+   while(temp!=NULL)
+   {
+
+        printf("%d ",temp->elem);
+        temp=temp->next;
+   }
+
+
+
+   free(temp);
+
+
+}
+
+/*Function : Delete any given element in the list */
+void delete_element(node_t *head,node_t *temp)
+{
+    int value;
+    node_t *pointer;
+    printf("\n");
+    printf("Enter the element to be deleted in the linked list:");
+    scanf("%d",&value);
+    temp=head;
+    pointer->elem=value;
+    pointer->next=NULL;
+    printf("\n");
+    printf("List is: ");
+    while(temp!=NULL)
+    {
+        if(temp->elem==pointer->elem)
+        {
+            temp=temp->next;
+        }
+        else
+        {
+            printf("%d ",temp->elem);
+            temp=temp->next;
+        }
+    }
+    free(temp);
+}
+void delete_beginingelement(node_t *head)
+{
+     node_t *temp;
+     head=head->next;
+     temp=head;
+     while(temp!=NULL)
+     {
+         printf("%d",temp->elem);
+         temp=temp->next;
+     }
+
+}
+
+
+void delete_endelement(node_t *head)
+{
+    node_t *temp;
+    node_t *prev;
+    node_t *first;
+    prev=head;
+    int value;
+    temp=head;
+    printf("Enter the element to be deleted ");
+    scanf("%d",&value);
+    while(prev->elem!=value)
+    {
+        prev=prev->next;
+
+    }
+    while(temp!=prev)
+    {
+        printf("%d",temp->elem);
+        temp=temp->next;
+    }
+}
+
+
+void ListDelete(node_t **listP, int value)
+{
+  node_t *currP, *prevP;
+
+  /* For 1st node, indicate there is no previous. */
+  prevP = NULL;
+
+  /*
+   * Visit each node, maintaining a pointer to
+   * the previous node we just visited.
+   */
+  for (currP = *listP;
+	currP != NULL;
+	prevP = currP, currP = currP->next) {
+
+    if (currP->element == value) {  /* Found it. */
+      if (prevP == NULL) {
+        /* Fix beginning pointer. */
+        *listP = currP->next;
+      } else {
+        /*
+         * Fix previous node's next to
+         * skip over the removed node.
+         */
+        prevP->next = currP->next;
+      }
+
+      /* Deallocate the node. */
+      free(currP);
+
+      /* Done searching. */
+      return;
+    }
+  }
+}
+
+void list_deletenode(node_t **ptr_head, node_t *head)
+{
+    **ptr_head=&head;
+    node_t *prev , node_t *current;
+    prev=NULL;
+    current=head;
+    while(current!=NULL)
+    {
+        if(current->elem==value)
+        {
+            if(prev==NULL)
+            {
+
+
+            }
+        }
+
+
+    }
+
+}
+
+/* Function : print the list */
+void print_list(node_t *head)
+{
+  printf("List is : ");
+  while (head != NULL)
+  {
+
+     printf("%d ", head->elem);
+     head=head->next;
+
+  }
+  printf("\n");
+}
+
+/* Function : main */
+int main()
+{
+   node_t *head=NULL;
+   node_t *temp;
+
+
+   head=insert_at_begin(head, 4);
+   print_list(head);
+   head=insert_at_begin(head, 5);
+   print_list(head);
+   head=insert_at_begin(head, 6);
+   temp=head;
+   print_list(head);
+   insert_at_end(head,temp, 7);
+   insert_at_end(head,temp, 8);
+   insert_at_end(head,temp, 9);
+   delete_anyelement(head);
+
+
+
+   return 0;
+}
+
